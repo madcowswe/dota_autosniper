@@ -26,3 +26,6 @@ hero_count = sorted(hero_count, key=lambda x:x[1]) #sort by count
 
 # replace hero_id by real name
 hero_count = [( next(h['localized_name'] for h in herolist if h['id'] == it[0]), it[1]) for it in hero_count]
+
+for h in hero_count:
+	print('{} : {}'.format('#'*h[1], h[0]))

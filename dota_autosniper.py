@@ -1,7 +1,7 @@
 import dota2api
 from collections import Counter
 from time import sleep
-import pyperclip
+import platform
 
 
 # Note, you have to export your Steam Web API key before running this script.
@@ -56,12 +56,19 @@ def dump_playerstats_from_match(match_id):
 
 # dump_playerstats_from_match(2328943922)
 
-# Scan clipboard for changes
-clipstate = pyperclip.paste()
+def get_clipboard():
+	if 'CYGWIN' in platform.system():
+		with open('/dev/clipboard', 'r') as f:
+			return f.read()
+	else:
+		import pyperclip
+		return pyperclip.paste()
 
+# Scan clipboard for changes
+clipstate = get_clipboard()
 while True:
-        new_clip = pyperclip.paste()
-        if new_clip and new_clip != clipstate:
-                clipstate = new_clip
-                snipe_player(clipstate)
-        sleep(0.2)
+	new_clip = get_clipboard()
+	if new_clip and new_clip != clipstate:
+			clipstate = new_clip
+			snipe_player(clipstate)
+	sleep(0.2)
